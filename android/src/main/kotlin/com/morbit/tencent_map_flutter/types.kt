@@ -433,6 +433,36 @@ data class MarkerUpdateOptions(
   }
 }
 
+/** 线段配置属性 */
+data class Polyline(
+    /** 标记点ID */
+    val id: String,
+    /** 点坐标 */
+    val position: List<Position>?,
+    /** 线的透明度 */
+    val alpha: Double? = null,
+    /** 线宽度 */
+    val width: Double? = null,
+    /** 连接点为圆角 */
+    val cap: Boolean? = null,
+    /** Z轴显示顺序 */
+    val zIndex: Int? = null,
+    /** 线段颜色 */
+    val color: Int? = null,
+)
+
+/** 线段更新选项 */
+data class PolylineUpdateOptions (
+    /** 点坐标 */
+    val position: List<Position>?,
+    /** 线宽度 */
+    val width: Double? = null,
+    /** 线段颜色 */
+    val color: Int? = null,
+    /** Z轴显示顺序 */
+    val zIndex: Int? = null,
+)
+
 /** 地图兴趣点 */
 data class Poi(
   /** 兴趣点的名称 */

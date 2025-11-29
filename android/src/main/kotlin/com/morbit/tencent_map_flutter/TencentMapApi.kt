@@ -6,7 +6,9 @@ import com.tencent.tencentmap.mapsdk.maps.TencentMap.MAP_TYPE_DARK
 import com.tencent.tencentmap.mapsdk.maps.TencentMap.MAP_TYPE_NORMAL
 import com.tencent.tencentmap.mapsdk.maps.TencentMap.MAP_TYPE_SATELLITE
 import com.tencent.tencentmap.mapsdk.maps.TencentMapInitializer
+import com.tencent.tencentmap.mapsdk.maps.model.LatLng
 import com.tencent.tencentmap.mapsdk.maps.model.LatLngBounds
+import kotlin.collections.set
 
 class TencentMapApi(private val tencentMap: TencentMap) {
   private val mapView = tencentMap.view
@@ -158,6 +160,44 @@ class TencentMapApi(private val tencentMap: TencentMap) {
       tencentMap.markers[markerId]?.setAnchor(options.anchor.x.toFloat(), options.anchor.y.toFloat())
     }
   }
+
+    fun addPolyline(polyline: Polyline) {
+        val tencentPolyline = mapView.map.addPolyline(polyline.toPolylineOptions(tencentMap.binding))
+        tencentMap.polylines[polyline.id] = tencentPolyline
+        tencentMap.tencentMapPolylineIdToDartPolylineId[tencentPolyline.id] = polyline.id
+    }
+
+    fun removePolyline(id: String) {
+        val polyline = tencentMap.polylines[id]
+        if (polyline != null) {
+            polyline.remove()
+            tencentMap.polylines.remove(id)
+            tencentMap.tencentMapPolylineIdToDartPolylineId.remove(polyline.id)
+        }
+    }
+
+    fun appendPolylinePoint(id: String, point: Position) {
+        val polyline = tencentMap.polylines[id]
+        polyline?.appendPoint(LatLng(point.latitude, point.longitude))
+    }
+
+    fun appendPolylinePoints(id: String, points: List<Position>) {
+        val polyline = tencentMap.polylines[id]
+        polyline?.appendPoints(points.map { position -> LatLng(position.latitude, position.longitude) })
+    }
+
+    fun updatePolyline(id: String, options: PolylineUpdateOptions) {
+        options.position?.let { tencentMap.polylines[id]?.points = it.map { position -> LatLng(position.latitude, position.longitude) } }
+        if (options.width != null) {
+            tencentMap.polylines[id]?.width = options.width.toFloat()
+        }
+        if (options.zIndex != null) {
+            tencentMap.polylines[id]?.zIndex = options.zIndex
+        }
+        if (options.color != null) {
+            tencentMap.polylines[id]?.color = options.color
+        }
+    }
 
   fun getUserLocation(): Location {
     return mapView.map.myLocation.toLocation()

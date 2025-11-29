@@ -88,6 +88,39 @@ class TencentMapController(viewId: Int, binding: FlutterPluginBinding, private v
         result.success(null)
       }
 
+      "addPolyline" -> {
+          val polyline = call.argument<Polyline>("polyline")!!
+          api.addPolyline(polyline)
+          result.success(null)
+      }
+
+      "removePolyline" -> {
+          val id = call.argument<String>("id")!!
+          api.removePolyline(id)
+          result.success(null)
+      }
+
+      "updatePolyline" -> {
+          val id = call.argument<String>("id")!!
+          val options = call.argument<PolylineUpdateOptions>("options")!!
+          api.updatePolyline(id, options)
+          result.success(null)
+      }
+
+      "appendPolylinePoint" -> {
+          val id = call.argument<String>("id")!!
+          val point = call.argument<Position>("point")!!
+          api.appendPolylinePoint(id, point)
+          result.success(null)
+      }
+
+      "appendPolylinePoints" -> {
+         val id = call.argument<String>("id")!!
+         val points = call.argument<List<Position>>("points")!!
+         api.appendPolylinePoints(id, points)
+         result.success(null)
+      }
+
       "start" -> {
         api.start()
         result.success(null)

@@ -22,12 +22,7 @@ enum RestrictRegionMode {
 }
 
 /// UI控件位置锚点
-enum UIControlAnchor {
-  bottomLeft,
-  bottomRight,
-  topLeft,
-  topRight,
-}
+enum UIControlAnchor { bottomLeft, bottomRight, topLeft, topRight }
 
 /// 定位模式: 在地图的各种应用场景中，用户对定位点展示时也希望地图能跟随定位点旋转、移动等多种行为
 enum UserLocationType {
@@ -49,10 +44,7 @@ enum UserLocationType {
 
 /// 点标记图标锚点
 class Anchor {
-  Anchor({
-    required this.x,
-    required this.y,
-  });
+  Anchor({required this.x, required this.y});
 
   /// 点标记图标锚点的X坐标
   double x;
@@ -61,27 +53,18 @@ class Anchor {
   double y;
 
   Object encode() {
-    return <Object?>[
-      x,
-      y,
-    ];
+    return <Object?>[x, y];
   }
 
   static Anchor decode(Object result) {
     result as List<Object?>;
-    return Anchor(
-      x: result[0]! as double,
-      y: result[1]! as double,
-    );
+    return Anchor(x: result[0]! as double, y: result[1]! as double);
   }
 }
 
 /// 图片信息
 class Bitmap {
-  Bitmap({
-    this.asset,
-    this.bytes,
-  });
+  Bitmap({this.asset, this.bytes});
 
   /// 图片资源路径
   String? asset;
@@ -90,29 +73,18 @@ class Bitmap {
   Uint8List? bytes;
 
   Object encode() {
-    return <Object?>[
-      asset,
-      bytes,
-    ];
+    return <Object?>[asset, bytes];
   }
 
   static Bitmap decode(Object result) {
     result as List<Object?>;
-    return Bitmap(
-      asset: result[0] as String?,
-      bytes: result[1] as Uint8List?,
-    );
+    return Bitmap(asset: result[0] as String?, bytes: result[1] as Uint8List?);
   }
 }
 
 /// 地图视野
 class CameraPosition {
-  CameraPosition({
-    this.position,
-    this.heading,
-    this.skew,
-    this.zoom,
-  });
+  CameraPosition({this.position, this.heading, this.skew, this.zoom});
 
   /// 地图视野的位置
   LatLng? position;
@@ -127,12 +99,7 @@ class CameraPosition {
   double? zoom;
 
   Object encode() {
-    return <Object?>[
-      position?.position.encode(),
-      heading,
-      skew,
-      zoom,
-    ];
+    return <Object?>[position?.position.encode(), heading, skew, zoom];
   }
 
   static CameraPosition decode(Object result) {
@@ -170,12 +137,7 @@ class EdgePadding {
   double left;
 
   Object encode() {
-    return <Object?>[
-      top,
-      right,
-      bottom,
-      left,
-    ];
+    return <Object?>[top, right, bottom, left];
   }
 
   static EdgePadding decode(Object result) {
@@ -191,11 +153,7 @@ class EdgePadding {
 
 /// 定位点
 class Location {
-  Location({
-    required this.position,
-    this.heading,
-    this.accuracy,
-  });
+  Location({required this.position, this.heading, this.accuracy});
 
   /// 定位点的位置
   LatLng position;
@@ -207,11 +165,7 @@ class Location {
   double? accuracy;
 
   Object encode() {
-    return <Object?>[
-      position.position.encode(),
-      heading,
-      accuracy,
-    ];
+    return <Object?>[position.position.encode(), heading, accuracy];
   }
 
   static Location decode(Object result) {
@@ -298,8 +252,9 @@ class MapConfig {
   static MapConfig decode(Object result) {
     result as List<Object?>;
     return MapConfig(
-      mapType:
-          result[0] != null ? MapType.values.elementAt(result[0] as int) : null,
+      mapType: result[0] != null
+          ? MapType.values.elementAt(result[0] as int)
+          : null,
       mapStyle: result[1] as int?,
       logoScale: result[2] as double?,
       logoPosition: result[3] != null
@@ -390,10 +345,12 @@ class Marker {
       rotation: result[3] as double?,
       zIndex: result[4] as int?,
       draggable: result[5] as bool?,
-      icon:
-          result[6] != null ? Bitmap.decode(result[6]! as List<Object?>) : null,
-      anchor:
-          result[7] != null ? Anchor.decode(result[7]! as List<Object?>) : null,
+      icon: result[6] != null
+          ? Bitmap.decode(result[6]! as List<Object?>)
+          : null,
+      anchor: result[7] != null
+          ? Anchor.decode(result[7]! as List<Object?>)
+          : null,
     );
   }
 }
@@ -453,20 +410,126 @@ class MarkerUpdateOptions {
       rotation: result[2] as double?,
       zIndex: result[3] as int?,
       draggable: result[4] as bool?,
-      icon:
-          result[5] != null ? Bitmap.decode(result[5]! as List<Object?>) : null,
-      anchor:
-          result[6] != null ? Anchor.decode(result[6]! as List<Object?>) : null,
+      icon: result[5] != null
+          ? Bitmap.decode(result[5]! as List<Object?>)
+          : null,
+      anchor: result[6] != null
+          ? Anchor.decode(result[6]! as List<Object?>)
+          : null,
+    );
+  }
+}
+
+/// 折线
+class Polyline {
+  Polyline({
+    required this.id,
+    required this.position,
+    this.alpha,
+    this.width,
+    this.cap,
+    this.zIndex,
+    this.color,
+  });
+
+  /// 折线ID
+  String id;
+
+  /// 折线点位置
+  List<LatLng> position;
+
+  /// 折线的透明度
+  double? alpha;
+
+  /// 折线宽度
+  double? width;
+
+  /// 连接点是否显示为圆角
+  bool? cap;
+
+  /// 折线的Z轴显示顺序
+  int? zIndex;
+
+  /// 折线颜色
+  int? color;
+
+  Object encode() {
+    return <Object?>[
+      id,
+      position.map((LatLng point) => point.encode()).toList(),
+      alpha,
+      width,
+      zIndex,
+      cap,
+      color,
+    ];
+  }
+
+  static Polyline decode(Object result) {
+    result as List<Object?>;
+    final pos = result[1]! as List<List<Object?>>;
+    List<LatLng> pos_result = [];
+    for (List<Object?> obj in pos) {
+      pos_result.add(Position.decode(obj).latLng);
+    }
+    return Polyline(
+      id: result[0]! as String,
+      position: pos_result,
+      alpha: result[2] as double?,
+      width: result[3] as double?,
+      cap: result[4] as bool?,
+      zIndex: result[5] as int?,
+      color: result[6] as int?,
+    );
+  }
+}
+
+/// 折线更新选项
+class PolylineUpdateOptions {
+  PolylineUpdateOptions({this.position, this.width, this.color, this.zIndex});
+
+  /// 折线点位置
+  List<LatLng>? position;
+
+  /// 折线宽度
+  double? width;
+
+  /// 折线颜色
+  int? color;
+
+  /// 折线的Z轴显示顺序
+  int? zIndex;
+
+  Object encode() {
+    return <Object?>[
+      position?.map((LatLng point) => point.encode()).toList(),
+      width,
+      color,
+      zIndex,
+    ];
+  }
+
+  static PolylineUpdateOptions decode(Object result) {
+    result as List<Object?>;
+    final pos = result[0] != 0 ? result[0] as List<List<Object?>> : null;
+    List<LatLng>? pos_result = result[0] != 0 ? [] : null;
+    if (pos != null) {
+      for (List<Object?> obj in pos) {
+        pos_result!.add(Position.decode(obj).latLng);
+      }
+    }
+    return PolylineUpdateOptions(
+      position: pos_result,
+      width: result[1] as double?,
+      color: result[2] as int?,
+      zIndex: result[3] as int?,
     );
   }
 }
 
 /// 地图兴趣点
 class Poi {
-  Poi({
-    required this.name,
-    required this.position,
-  });
+  Poi({required this.name, required this.position});
 
   /// 兴趣点的名称
   String name;
@@ -475,10 +538,7 @@ class Poi {
   LatLng position;
 
   Object encode() {
-    return <Object?>[
-      name,
-      position.position.encode(),
-    ];
+    return <Object?>[name, position.position.encode()];
   }
 
   static Poi decode(Object result) {
@@ -492,14 +552,11 @@ class Poi {
 
 /// 位置
 class Position {
-  Position({
-    required double latitude,
-    required double longitude,
-  })  : latitude =
-            latitude < -90.0 ? -90.0 : (latitude > 90.0 ? 90.0 : latitude),
-        longitude = longitude >= -180 && longitude < 180
-            ? longitude
-            : (longitude + 180.0) % 360.0 - 180.0;
+  Position({required double latitude, required double longitude})
+    : latitude = latitude < -90.0 ? -90.0 : (latitude > 90.0 ? 90.0 : latitude),
+      longitude = longitude >= -180 && longitude < 180
+          ? longitude
+          : (longitude + 180.0) % 360.0 - 180.0;
 
   /// 位置的纬度
   double latitude;
@@ -508,10 +565,7 @@ class Position {
   double longitude;
 
   Object encode() {
-    return <Object?>[
-      latitude,
-      longitude,
-    ];
+    return <Object?>[latitude, longitude];
   }
 
   static Position decode(Object result) {
@@ -546,12 +600,7 @@ class Region {
   double west;
 
   Object encode() {
-    return <Object?>[
-      north,
-      east,
-      south,
-      west,
-    ];
+    return <Object?>[north, east, south, west];
   }
 
   static Region decode(Object result) {
@@ -567,10 +616,7 @@ class Region {
 
 /// UI控件位置偏移
 class UIControlOffset {
-  UIControlOffset({
-    required this.x,
-    required this.y,
-  });
+  UIControlOffset({required this.x, required this.y});
 
   /// X轴方向的位置偏移
   double x;
@@ -579,27 +625,18 @@ class UIControlOffset {
   double y;
 
   Object encode() {
-    return <Object?>[
-      x,
-      y,
-    ];
+    return <Object?>[x, y];
   }
 
   static UIControlOffset decode(Object result) {
     result as List<Object?>;
-    return UIControlOffset(
-      x: result[0]! as double,
-      y: result[1]! as double,
-    );
+    return UIControlOffset(x: result[0]! as double, y: result[1]! as double);
   }
 }
 
 /// UI控件位置
 class UIControlPosition {
-  UIControlPosition({
-    required this.anchor,
-    required this.offset,
-  });
+  UIControlPosition({required this.anchor, required this.offset});
 
   /// UI控件位置锚点
   UIControlAnchor anchor;
@@ -608,10 +645,7 @@ class UIControlPosition {
   UIControlOffset offset;
 
   Object encode() {
-    return <Object?>[
-      anchor.index,
-      offset.encode(),
-    ];
+    return <Object?>[anchor.index, offset.encode()];
   }
 
   static UIControlPosition decode(Object result) {

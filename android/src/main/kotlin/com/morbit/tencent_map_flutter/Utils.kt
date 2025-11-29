@@ -8,6 +8,7 @@ import com.tencent.tencentmap.mapsdk.maps.model.LatLngBounds
 import com.tencent.tencentmap.mapsdk.maps.model.MapPoi
 import com.tencent.tencentmap.mapsdk.maps.model.MarkerOptions
 import com.tencent.tencentmap.mapsdk.maps.model.MyLocationStyle
+import com.tencent.tencentmap.mapsdk.maps.model.PolylineOptions
 import com.tencent.tencentmap.mapsdk.maps.model.RestrictBoundsFitMode
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import android.location.Location as AndroidLocation
@@ -96,6 +97,17 @@ fun Marker.toMarkerOptions(binding: FlutterPluginBinding): MarkerOptions {
     zIndex?.let { options.zIndex(it.toFloat()) }
     options
   }
+}
+
+fun Polyline.toPolylineOptions(binding: FlutterPluginBinding): PolylineOptions {
+    val option = PolylineOptions();
+    position?.let { option.addAll(it.map { position -> LatLng(position.latitude, position.longitude) }) }
+    cap?.let { option.lineCap(it) }
+    color?.let { option.color(it) }
+    width?.let { option.width(it.toFloat()) }
+    alpha?.let { option.alpha(it.toFloat()) }
+    zIndex?.let{ option.zIndex(it) }
+    return option;
 }
 
 fun Bitmap.toBitmapDescriptor(binding: FlutterPluginBinding): BitmapDescriptor? {

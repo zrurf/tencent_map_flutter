@@ -38,9 +38,9 @@ class TencentMapMethodChannel {
       StreamController<MapEvent<Object?>>.broadcast();
 
   // Returns a filtered view of the events in the _controller, by mapId.
-  Stream<MapEvent<Object?>> _events(int mapId) =>
-      mapEventStreamController.stream
-          .where((MapEvent<Object?> event) => event.mapId == mapId);
+  Stream<MapEvent<Object?>> _events(int mapId) => mapEventStreamController
+      .stream
+      .where((MapEvent<Object?> event) => event.mapId == mapId);
 
   Stream<ScaleViewChangedEvent> onScaleViewChanged({required int mapId}) {
     return _events(mapId).whereType<ScaleViewChangedEvent>();
@@ -98,97 +98,93 @@ class TencentMapMethodChannel {
     switch (call.method) {
       case "onScaleViewChanged":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(ScaleViewChangedEvent(
-          mapId,
-          arguments["scale"] as double,
-        ));
+        mapEventStreamController.add(
+          ScaleViewChangedEvent(mapId, arguments["scale"] as double),
+        );
         break;
       case "onPress":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(MapPressEvent(
-          mapId,
-          arguments["position"] as Position,
-        ));
+        mapEventStreamController.add(
+          MapPressEvent(mapId, arguments["position"] as Position),
+        );
         break;
       case "onLongPress":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(MapLongPressEvent(
-          mapId,
-          arguments["position"] as Position,
-        ));
+        mapEventStreamController.add(
+          MapLongPressEvent(mapId, arguments["position"] as Position),
+        );
         break;
       case "onTapPoi":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(PoiTapEvent(
-          mapId,
-          arguments["poi"] as Poi,
-        ));
+        mapEventStreamController.add(
+          PoiTapEvent(mapId, arguments["poi"] as Poi),
+        );
         break;
       case "onCameraMoveStart":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(CameraMoveStartEvent(
-          mapId,
-          arguments["position"] as CameraPosition,
-        ));
+        mapEventStreamController.add(
+          CameraMoveStartEvent(mapId, arguments["position"] as CameraPosition),
+        );
         break;
       case "onCameraMove":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(CameraMoveEvent(
-          mapId,
-          arguments["position"] as CameraPosition,
-        ));
+        mapEventStreamController.add(
+          CameraMoveEvent(mapId, arguments["position"] as CameraPosition),
+        );
         break;
       case "onCameraMoveEnd":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(CameraMoveEndEvent(
-          mapId,
-          arguments["position"] as CameraPosition,
-        ));
+        mapEventStreamController.add(
+          CameraMoveEndEvent(mapId, arguments["position"] as CameraPosition),
+        );
         break;
       case "onTapMarker":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(TapMarkerEvent(
-          mapId,
-          arguments["markerId"] as String,
-        ));
+        mapEventStreamController.add(
+          TapMarkerEvent(mapId, arguments["markerId"] as String),
+        );
         break;
       case "onMarkerDragStart":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(MarkerDragStartEvent(
-          mapId,
-          arguments["position"] as Position,
-          arguments["markerId"] as String,
-        ));
+        mapEventStreamController.add(
+          MarkerDragStartEvent(
+            mapId,
+            arguments["position"] as Position,
+            arguments["markerId"] as String,
+          ),
+        );
         break;
       case "onMarkerDrag":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(MarkerDragEvent(
-          mapId,
-          arguments["position"] as Position,
-          arguments["markerId"] as String,
-        ));
+        mapEventStreamController.add(
+          MarkerDragEvent(
+            mapId,
+            arguments["position"] as Position,
+            arguments["markerId"] as String,
+          ),
+        );
         break;
       case "onMarkerDragEnd":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(MarkerDragEndEvent(
-          mapId,
-          arguments["position"] as Position,
-          arguments["markerId"] as String,
-        ));
+        mapEventStreamController.add(
+          MarkerDragEndEvent(
+            mapId,
+            arguments["position"] as Position,
+            arguments["markerId"] as String,
+          ),
+        );
         break;
       case "onLocation":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(LocationChangedEvent(
-          mapId,
-          arguments["location"] as Location,
-        ));
+        mapEventStreamController.add(
+          LocationChangedEvent(mapId, arguments["location"] as Location),
+        );
         break;
       case "onUserLocationClick":
         final Map<String, Object?> arguments = _getArgumentDictionary(call);
-        mapEventStreamController.add(UserLocationClickEvent(
-          mapId,
-          arguments["position"] as Position,
-        ));
+        mapEventStreamController.add(
+          UserLocationClickEvent(mapId, arguments["position"] as Position),
+        );
         break;
       default:
         throw MissingPluginException();
@@ -201,22 +197,16 @@ class TencentMapMethodChannel {
 
   /// 同意隐私协议，显示地图前必须调用
   Future<void> agreePrivacy(bool agree) {
-    return _initializerChannel.invokeMethod(
-      "agreePrivacy",
-      <String, dynamic>{
-        "agree": agree,
-      },
-    );
+    return _initializerChannel.invokeMethod("agreePrivacy", <String, dynamic>{
+      "agree": agree,
+    });
   }
 
   /// 设置地图属性
   Future<void> updateMapConfig(MapConfig config, {required int mapId}) {
-    return _channel(mapId).invokeMethod(
-      "updateMapConfig",
-      <String, dynamic>{
-        "config": config,
-      },
-    );
+    return _channel(
+      mapId,
+    ).invokeMethod("updateMapConfig", <String, dynamic>{"config": config});
   }
 
   /// 移动地图视野
@@ -225,13 +215,10 @@ class TencentMapMethodChannel {
     int duration, {
     required int mapId,
   }) {
-    return _channel(mapId).invokeMethod(
-      "moveCamera",
-      <String, dynamic>{
-        "position": position,
-        "duration": duration,
-      },
-    );
+    return _channel(mapId).invokeMethod("moveCamera", <String, dynamic>{
+      "position": position,
+      "duration": duration,
+    });
   }
 
   /// 移动地图视野到某个地图区域
@@ -241,14 +228,11 @@ class TencentMapMethodChannel {
     int duration, {
     required int mapId,
   }) {
-    return _channel(mapId).invokeMethod(
-      "moveCameraToRegion",
-      <String, dynamic>{
-        "region": region,
-        "padding": padding,
-        "duration": duration,
-      },
-    );
+    return _channel(mapId).invokeMethod("moveCameraToRegion", <String, dynamic>{
+      "region": region,
+      "padding": padding,
+      "duration": duration,
+    });
   }
 
   /// 移动地图视野到包含一组坐标点的某个地图区域
@@ -274,13 +258,10 @@ class TencentMapMethodChannel {
     RestrictRegionMode mode, {
     required int mapId,
   }) {
-    return _channel(mapId).invokeMethod(
-      "setRestrictRegion",
-      <String, dynamic>{
-        "region": region,
-        "mode": mode.index,
-      },
-    );
+    return _channel(mapId).invokeMethod("setRestrictRegion", <String, dynamic>{
+      "region": region,
+      "mode": mode.index,
+    });
   }
 
   Future<void> removeRestrictRegion({required int mapId}) {
@@ -289,22 +270,16 @@ class TencentMapMethodChannel {
 
   /// 添加标记点
   Future<void> addMarker(Marker marker, {required int mapId}) {
-    return _channel(mapId).invokeMethod(
-      "addMarker",
-      <String, dynamic>{
-        "marker": marker,
-      },
-    );
+    return _channel(
+      mapId,
+    ).invokeMethod("addMarker", <String, dynamic>{"marker": marker});
   }
 
   /// 移除标记点
   Future<void> removeMarker(String id, {required int mapId}) {
-    return _channel(mapId).invokeMethod(
-      "removeMarker",
-      <String, dynamic>{
-        "id": id,
-      },
-    );
+    return _channel(
+      mapId,
+    ).invokeMethod("removeMarker", <String, dynamic>{"id": id});
   }
 
   /// 更新标记点
@@ -313,19 +288,67 @@ class TencentMapMethodChannel {
     MarkerUpdateOptions options, {
     required int mapId,
   }) {
+    return _channel(mapId).invokeMethod("updateMarker", <String, dynamic>{
+      "markerId": markerId,
+      "options": options,
+    });
+  }
+
+  /// 添加折线
+  Future<void> addPolyline(Polyline polyline, {required int mapId}) {
+    return _channel(
+      mapId,
+    ).invokeMethod("addPolyline", <String, dynamic>{"polyline": polyline});
+  }
+
+  /// 移除折线
+  Future<void> removePolyline(String id, {required int mapId}) {
+    return _channel(
+      mapId,
+    ).invokeMethod("removePolyline", <String, dynamic>{"id": id});
+  }
+
+  /// 更新折线
+  Future<void> updatePolyline(
+    String id,
+    PolylineUpdateOptions options, {
+    required int mapId,
+  }) {
+    return _channel(mapId).invokeMethod("updatePolyline", <String, dynamic>{
+      "id": id,
+      "options": options,
+    });
+  }
+
+  /// 添加折线点
+  Future<void> appendPolylinePoint(
+    String id,
+    LatLng point, {
+    required int mapId,
+  }) {
     return _channel(mapId).invokeMethod(
-      "updateMarker",
-      <String, dynamic>{
-        "markerId": markerId,
-        "options": options,
-      },
+      "appendPolylinePoint",
+      <String, dynamic>{"id": id, "point": point},
+    );
+  }
+
+  /// 添加折线点
+  Future<void> appendPolylinePoints(
+    String id,
+    List<LatLng> points, {
+    required int mapId,
+  }) {
+    return _channel(mapId).invokeMethod(
+      "appendPolylinePoints",
+      <String, dynamic>{"id": id, "points": points},
     );
   }
 
   /// 获取当前定位信息
   Future<Location> getUserLocation({required int mapId}) async {
-    final result =
-        await _channel(mapId).invokeMethod<Location>("getUserLocation");
+    final result = await _channel(
+      mapId,
+    ).invokeMethod<Location>("getUserLocation");
     if (result == null) throw "Failed to get user location";
     return result;
   }
