@@ -227,7 +227,7 @@ class TencentMapController {
 
   /// 添加折线点
   void appendPolylinePoints(String id, List<LatLng> points) {
-    TencentMapMethodChannel.instance.appendPolylinePoint(
+    TencentMapMethodChannel.instance.appendPolylinePoints(
       id,
       points,
       mapId: mapId,
