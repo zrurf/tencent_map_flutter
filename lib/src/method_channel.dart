@@ -435,6 +435,12 @@ class _TencentMapApiCodec extends StandardMessageCodec {
     } else if (value is UIControlPosition) {
       buffer.putUint8(144);
       writeValue(buffer, value.encode());
+    } else if (value is Polyline) {
+      buffer.putUint8(145);
+      writeValue(buffer, value.encode());
+    } else if (value is PolylineUpdateOptions) {
+      buffer.putUint8(146);
+      writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
     }
@@ -477,6 +483,10 @@ class _TencentMapApiCodec extends StandardMessageCodec {
         return UIControlOffset.decode(readValue(buffer)!);
       case 144:
         return UIControlPosition.decode(readValue(buffer)!);
+      case 145:
+        return Polyline.decode(readValue(buffer)!);
+      case 146:
+        return PolylineUpdateOptions.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }

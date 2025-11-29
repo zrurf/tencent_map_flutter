@@ -1,5 +1,7 @@
 package com.morbit.tencent_map_flutter
 
+import com.tencent.tmsqmsp.oaid2.p
+
 /** 地图类型 */
 enum class MapType(val raw: Int) {
   /** 常规地图 */
@@ -449,7 +451,34 @@ data class Polyline(
     val zIndex: Int? = null,
     /** 线段颜色 */
     val color: Int? = null,
-)
+) {
+    companion object {
+        fun fromList(list: List<Any?>): Polyline {
+            val id = list[0] as String
+            val position = (list[1] as List<List<Any?>>).map { p -> Position.fromList(p) }.toList()
+            val alpha = list[2] as Double?
+            val width = list[3] as Double?
+            val cap = list[4] as Boolean?
+            val zIndex = list[5] as Int?
+            val color = list[6] as Int?
+
+            return Polyline(id, position, alpha, width, cap, zIndex, color)
+        }
+    }
+
+    fun toList(): List<Any?> {
+
+        return listOf(
+            id,
+            position?.map { p -> p.toList() }?.toList(),
+            alpha,
+            width,
+            cap,
+            zIndex,
+            color
+        )
+    }
+}
 
 /** 线段更新选项 */
 data class PolylineUpdateOptions (
@@ -461,7 +490,26 @@ data class PolylineUpdateOptions (
     val color: Int? = null,
     /** Z轴显示顺序 */
     val zIndex: Int? = null,
-)
+) {
+    companion object {
+        fun fromList(list: List<Any?>): PolylineUpdateOptions {
+            val position: List<Position> = (list[0] as List<List<Any?>>).map { p -> Position.fromList(p) }.toList()
+            val width = list[1] as Double?
+            val color = list[2] as Int?
+            val zIndex = list[3] as Int?
+            return PolylineUpdateOptions(position, width, color, zIndex)
+        }
+    }
+
+    fun toList(): List<Any?> {
+        return listOf(
+            position?.map { p -> p.toList() }?.toList(),
+            width,
+            zIndex,
+            color
+        )
+    }
+}
 
 /** 地图兴趣点 */
 data class Poi(

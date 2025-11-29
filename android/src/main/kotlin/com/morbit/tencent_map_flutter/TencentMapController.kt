@@ -387,6 +387,18 @@ private object TencentMapApiCodec : StandardMessageCodec() {
         }
       }
 
+      145.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let {
+            Polyline.fromList(it)
+        }
+      }
+
+      146.toByte() -> {
+         return (readValue(buffer) as? List<Any?>)?.let {
+            PolylineUpdateOptions.fromList(it)
+         }
+      }
+
       else -> super.readValueOfType(type, buffer)
     }
   }
@@ -476,6 +488,16 @@ private object TencentMapApiCodec : StandardMessageCodec() {
       is UIControlPosition -> {
         stream.write(144)
         writeValue(stream, value.toList())
+      }
+
+      is Polyline -> {
+          stream.write(145)
+          writeValue(stream, value.toList())
+      }
+
+      is PolylineUpdateOptions -> {
+          stream.write(146)
+          writeValue(stream, value.toList())
       }
 
       else -> super.writeValue(stream, value)
