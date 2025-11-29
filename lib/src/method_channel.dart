@@ -323,7 +323,7 @@ class TencentMapMethodChannel {
   /// 添加折线点
   Future<void> appendPolylinePoint(
     String id,
-    LatLng point, {
+    Position point, {
     required int mapId,
   }) {
     return _channel(mapId).invokeMethod(
@@ -335,7 +335,7 @@ class TencentMapMethodChannel {
   /// 添加折线点
   Future<void> appendPolylinePoints(
     String id,
-    List<LatLng> points, {
+    List<Position> points, {
     required int mapId,
   }) {
     return _channel(mapId).invokeMethod(

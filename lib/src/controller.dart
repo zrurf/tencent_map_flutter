@@ -220,7 +220,7 @@ class TencentMapController {
   void appendPolylinePoint(String id, LatLng point) {
     TencentMapMethodChannel.instance.appendPolylinePoint(
       id,
-      point,
+      point.position,
       mapId: mapId,
     );
   }
@@ -229,7 +229,7 @@ class TencentMapController {
   void appendPolylinePoints(String id, List<LatLng> points) {
     TencentMapMethodChannel.instance.appendPolylinePoints(
       id,
-      points,
+      points.map((latLng) => latLng.position).toList(),
       mapId: mapId,
     );
   }
