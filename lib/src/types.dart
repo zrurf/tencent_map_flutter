@@ -456,7 +456,7 @@ class Polyline {
   Object encode() {
     return <Object?>[
       id,
-      position.map((LatLng point) => point.encode()).toList(),
+      position.map((LatLng point) => point.position.encode()).toList(),
       alpha,
       width,
       zIndex,
@@ -502,7 +502,7 @@ class PolylineUpdateOptions {
 
   Object encode() {
     return <Object?>[
-      position?.map((LatLng point) => point.encode()).toList(),
+      position?.map((LatLng point) => point.position.encode()).toList(),
       width,
       color,
       zIndex,
