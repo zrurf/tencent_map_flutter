@@ -103,35 +103,35 @@ fun Marker.toMarkerOptions(binding: FlutterPluginBinding): MarkerOptions {
 }
 
 fun Polyline.toPolylineOptions(binding: FlutterPluginBinding): PolylineOptions {
-    val option = PolylineOptions();
+    val option = PolylineOptions()
     position?.let { option.addAll(it.map { position -> LatLng(position.latitude, position.longitude) }) }
     cap?.let { option.lineCap(it) }
-    color?.let { option.color(it) }
+    color?.let { option.color(it.toInt()) }
     width?.let { option.width(it.toFloat()) }
     alpha?.let { option.alpha(it.toFloat()) }
-    zIndex?.let{ option.zIndex(it) }
+    zIndex?.let{ option.zIndex(it.toInt()) }
     return option
 }
 
 fun Polygon.toPolygonOptions(binding: FlutterPluginBinding): PolygonOptions {
-    val option = PolygonOptions();
+    val option = PolygonOptions()
     position?.let { option.addAll(it.map { position -> LatLng(position.latitude, position.longitude) }) }
-    color?.let { option.fillColor(it) }
-    borderColor?.let { option.strokeColor(it) }
+    color?.let { option.fillColor(it.toInt()) }
+    borderColor?.let { option.strokeColor(it.toInt()) }
     width?.let { option.strokeWidth(it.toFloat()) }
     holes?.let { option.setHolePoints(it.map { p -> p.map { p1 -> LatLng(p1.latitude, p1.longitude) } }) }
-    zIndex?.let{ option.zIndex(it) }
+    zIndex?.let{ option.zIndex(it.toInt()) }
     return option
 }
 
 fun Circle.toCircleOptions(binding: FlutterPluginBinding): CircleOptions {
-    val option = CircleOptions();
+    val option = CircleOptions()
     position?.let { option.center(LatLng(it.latitude, it.longitude)) }
     radius?.let { option.radius(it) }
-    color?.let { option.fillColor(it) }
-    borderColor?.let { option.strokeColor(it) }
+    color?.let { option.fillColor(it.toInt()) }
+    borderColor?.let { option.strokeColor(it.toInt()) }
     width?.let { option.strokeWidth(it.toFloat()) }
-    zIndex?.let{ option.zIndex(it) }
+    zIndex?.let{ option.zIndex(it.toInt()) }
     option.visible(true)
     return option
 }

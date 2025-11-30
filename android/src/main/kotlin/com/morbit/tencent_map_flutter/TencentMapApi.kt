@@ -153,9 +153,7 @@ class TencentMapApi(private val tencentMap: TencentMap) {
     if (options.draggable != null) {
       tencentMap.markers[markerId]?.isDraggable = options.draggable
     }
-    if (options.icon != null) {
-      options.icon.toBitmapDescriptor(tencentMap.binding)?.let { tencentMap.markers[markerId]?.setIcon(it) }
-    }
+    options.icon?.toBitmapDescriptor(tencentMap.binding)?.let { tencentMap.markers[markerId]?.setIcon(it) }
     if (options.anchor != null) {
       tencentMap.markers[markerId]?.setAnchor(options.anchor.x.toFloat(), options.anchor.y.toFloat())
     }
@@ -192,10 +190,10 @@ class TencentMapApi(private val tencentMap: TencentMap) {
             tencentMap.polylines[id]?.width = options.width.toFloat()
         }
         if (options.zIndex != null) {
-            tencentMap.polylines[id]?.zIndex = options.zIndex
+            tencentMap.polylines[id]?.zIndex = options.zIndex.toInt()
         }
         if (options.color != null) {
-            tencentMap.polylines[id]?.color = options.color
+            tencentMap.polylines[id]?.color = options.color.toInt()
         }
     }
 
@@ -217,16 +215,16 @@ class TencentMapApi(private val tencentMap: TencentMap) {
     fun updatePolygon(id: String, options: PolygonUpdateOptions) {
         options.position?.let { tencentMap.polygons[id]?.points = it.map { position -> LatLng(position.latitude, position.longitude) } }
         if (options.color != null) {
-            tencentMap.polygons[id]?.fillColor = options.color
+            tencentMap.polygons[id]?.fillColor = options.color.toInt()
         }
         if (options.borderColor != null) {
-            tencentMap.polygons[id]?.strokeColor = options.borderColor
+            tencentMap.polygons[id]?.strokeColor = options.borderColor.toInt()
         }
         if (options.width != null) {
             tencentMap.polygons[id]?.strokeWidth = options.width.toFloat()
         }
         if (options.zIndex != null) {
-            tencentMap.polygons[id]?.zIndex = options.zIndex
+            tencentMap.polygons[id]?.zIndex = options.zIndex.toInt()
         }
         if (options.holes != null) {
             tencentMap.polygons[id]?.setHolePoints(options.holes.map { p -> p.map { p1 -> LatLng(p1.latitude, p1.longitude) } })
@@ -254,16 +252,16 @@ class TencentMapApi(private val tencentMap: TencentMap) {
             tencentMap.circles[id]?.radius = options.radius
         }
         if (options.color != null) {
-            tencentMap.circles[id]?.fillColor = options.color
+            tencentMap.circles[id]?.fillColor = options.color.toInt()
         }
         if (options.borderColor != null) {
-            tencentMap.circles[id]?.strokeColor = options.borderColor
+            tencentMap.circles[id]?.strokeColor = options.borderColor.toInt()
         }
         if (options.width != null) {
             tencentMap.circles[id]?.strokeWidth = options.width.toFloat()
         }
         if (options.zIndex != null) {
-            tencentMap.circles[id]?.zIndex = options.zIndex
+            tencentMap.circles[id]?.zIndex = options.zIndex.toInt()
         }
     }
 
