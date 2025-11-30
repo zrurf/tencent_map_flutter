@@ -455,7 +455,7 @@ data class Polyline(
     companion object {
         fun fromList(list: List<Any?>): Polyline {
             val id = list[0] as String
-            val position = (list[1] as List<List<Any?>>?)?.map { p -> Position.fromList(p) }.toList()
+            val position = (list[1] as List<List<Any?>>?)?.map { p -> Position.fromList(p) }?.toList()
             val alpha = list[2] as Double?
             val width = list[3] as Double?
             val cap = list[4] as Boolean?
@@ -493,7 +493,7 @@ data class PolylineUpdateOptions (
 ) {
     companion object {
         fun fromList(list: List<Any?>): PolylineUpdateOptions {
-            val position: List<Position> = (list[0] as List<List<Any?>>?)?.map { p -> Position.fromList(p) }.toList()
+            val position: List<Position>? = (list[0] as List<List<Any?>>?)?.map { p -> Position.fromList(p) }?.toList()
             val width = list[1] as Double?
             val color = list[2] as Int?
             val zIndex = list[3] as Int?
@@ -531,7 +531,7 @@ data class Polygon (
     companion object {
         fun fromList(list: List<Any?>): Polygon {
             val id = list[0] as String
-            val position = (list[1] as List<List<Any?>>?)?.map { p -> Position.fromList(p) }.toList()
+            val position = (list[1] as List<List<Any?>>?)?.map { p -> Position.fromList(p) }?.toList()
             val width = list[2] as Double?
             val color = list[3] as Int?
             val borderColor = list[4] as Int?
@@ -574,7 +574,7 @@ data class PolygonUpdateOptions (
 ) {
     companion object {
         fun fromList(list: List<Any?>): PolygonUpdateOptions {
-            val position = (list[0] as List<List<Any?>>?)?.map { p -> Position.fromList(p) }.toList()
+            val position = (list[0] as List<List<Any?>>?)?.map { p -> Position.fromList(p) }?.toList()
             val width = list[1] as Double?
             val color = list[2] as Int?
             val borderColor = list[3] as Int?
@@ -582,7 +582,7 @@ data class PolygonUpdateOptions (
                 p.map { p1 ->
                     Position.fromList(p1)
                 }.toList()
-            }.toList()
+            }?.toList()
             val zIndex = list[5] as Int?
 
             return PolygonUpdateOptions(position, width, color, borderColor, holes, zIndex)
