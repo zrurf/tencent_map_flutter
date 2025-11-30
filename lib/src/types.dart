@@ -747,7 +747,7 @@ class CircleUpdateOptions {
 
   Object encode() {
     return <Object?>[
-      position.position.encode(),
+      position?.position.encode(),
       radius,
       width,
       color,
