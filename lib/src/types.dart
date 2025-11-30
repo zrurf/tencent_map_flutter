@@ -728,7 +728,7 @@ class CircleUpdateOptions {
   });
 
   /// 圆心位置
-  LatLng position;
+  LatLng? position;
 
   /// 圆半径
   double? radius;
@@ -759,7 +759,9 @@ class CircleUpdateOptions {
   static CircleUpdateOptions decode(Object result) {
     result as List<Object?>;
     return CircleUpdateOptions(
-      position: Position.decode(result[0]! as List<Object?>).latLng,
+      position: result[0] != null
+          ? Position.decode(result[0]! as List<Object?>).latLng
+          : null,
       radius: result[1] as double,
       width: result[2] as double?,
       color: result[3] as int?,
