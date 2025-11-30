@@ -132,6 +132,7 @@ fun Circle.toCircleOptions(binding: FlutterPluginBinding): CircleOptions {
     borderColor?.let { option.strokeColor(it) }
     width?.let { option.strokeWidth(it.toFloat()) }
     zIndex?.let{ option.zIndex(it) }
+    option.visible(true)
     return option
 }
 
