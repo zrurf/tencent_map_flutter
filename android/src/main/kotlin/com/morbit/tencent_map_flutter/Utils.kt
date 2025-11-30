@@ -3,14 +3,17 @@ package com.morbit.tencent_map_flutter
 import android.graphics.BitmapFactory
 import com.tencent.tencentmap.mapsdk.maps.model.BitmapDescriptor
 import com.tencent.tencentmap.mapsdk.maps.model.BitmapDescriptorFactory
+import com.tencent.tencentmap.mapsdk.maps.model.CircleOptions
 import com.tencent.tencentmap.mapsdk.maps.model.LatLng
 import com.tencent.tencentmap.mapsdk.maps.model.LatLngBounds
 import com.tencent.tencentmap.mapsdk.maps.model.MapPoi
 import com.tencent.tencentmap.mapsdk.maps.model.MarkerOptions
 import com.tencent.tencentmap.mapsdk.maps.model.MyLocationStyle
+import com.tencent.tencentmap.mapsdk.maps.model.PolygonOptions
 import com.tencent.tencentmap.mapsdk.maps.model.PolylineOptions
 import com.tencent.tencentmap.mapsdk.maps.model.RestrictBoundsFitMode
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
+import kotlin.collections.map
 import android.location.Location as AndroidLocation
 import com.tencent.tencentmap.mapsdk.maps.model.CameraPosition as TencentCameraPosition
 
@@ -107,7 +110,29 @@ fun Polyline.toPolylineOptions(binding: FlutterPluginBinding): PolylineOptions {
     width?.let { option.width(it.toFloat()) }
     alpha?.let { option.alpha(it.toFloat()) }
     zIndex?.let{ option.zIndex(it) }
-    return option;
+    return option
+}
+
+fun Polygon.toPolygonOptions(binding: FlutterPluginBinding): PolygonOptions {
+    val option = PolygonOptions();
+    position?.let { option.addAll(it.map { position -> LatLng(position.latitude, position.longitude) }) }
+    color?.let { option.fillColor(it) }
+    borderColor?.let { option.strokeColor(it) }
+    width?.let { option.strokeWidth(it.toFloat()) }
+    holes?.let { option.setHolePoints(it.map { p -> p.map { p1 -> LatLng(p1.latitude, p1.longitude) } }) }
+    zIndex?.let{ option.zIndex(it) }
+    return option
+}
+
+fun Circle.toCircleOptions(binding: FlutterPluginBinding): CircleOptions {
+    val option = CircleOptions();
+    position?.let { option.center(LatLng(it.latitude, it.longitude)) }
+    radius?.let { option.radius(it) }
+    color?.let { option.fillColor(it) }
+    borderColor?.let { option.strokeColor(it) }
+    width?.let { option.strokeWidth(it.toFloat()) }
+    zIndex?.let{ option.zIndex(it) }
+    return option
 }
 
 fun Bitmap.toBitmapDescriptor(binding: FlutterPluginBinding): BitmapDescriptor? {

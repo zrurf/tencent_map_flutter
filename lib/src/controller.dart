@@ -234,6 +234,30 @@ class TencentMapController {
     );
   }
 
+  void addPolygon(Polygon polygon) {
+    TencentMapMethodChannel.instance.addPolygon(polygon, mapId: mapId);
+  }
+
+  void removePolygon(String id) {
+    TencentMapMethodChannel.instance.removePolygon(id, mapId: mapId);
+  }
+
+  void updatePolygon(String id, PolygonUpdateOptions options) {
+    TencentMapMethodChannel.instance.updatePolygon(id, options, mapId: mapId);
+  }
+
+  void addCircle(Circle circle) {
+    TencentMapMethodChannel.instance.addCircle(circle, mapId: mapId);
+  }
+
+  void removeCircle(String id) {
+    TencentMapMethodChannel.instance.removeCircle(id, mapId: mapId);
+  }
+
+  void updateCircle(String id, CircleUpdateOptions options) {
+    TencentMapMethodChannel.instance.updateCircle(id, options, mapId: mapId);
+  }
+
   /// 获取当前定位
   Future<Location> getUserLocation() {
     return TencentMapMethodChannel.instance.getUserLocation(mapId: mapId);

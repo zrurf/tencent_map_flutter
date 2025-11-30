@@ -344,6 +344,58 @@ class TencentMapMethodChannel {
     );
   }
 
+  /// 添加多边形
+  Future<void> addPolygon(Polygon polygon, {required int mapId}) {
+    return _channel(
+      mapId,
+    ).invokeMethod("addPolygon", <String, dynamic>{"polygon": polygon});
+  }
+
+  /// 移除多边形
+  Future<void> removePolygon(String id, {required int mapId}) {
+    return _channel(
+      mapId,
+    ).invokeMethod("removePolygon", <String, dynamic>{"id": id});
+  }
+
+  /// 更新多边形
+  Future<void> updatePolygon(
+    String id,
+    PolygonUpdateOptions options, {
+    required int mapId,
+  }) {
+    return _channel(mapId).invokeMethod("updatePolygon", <String, dynamic>{
+      "id": id,
+      "options": options,
+    });
+  }
+
+  /// 添加圆
+  Future<void> addCircle(Circle circle, {required int mapId}) {
+    return _channel(
+      mapId,
+    ).invokeMethod("addCircle", <String, dynamic>{"circle": circle});
+  }
+
+  /// 移除圆
+  Future<void> removeCircle(String id, {required int mapId}) {
+    return _channel(
+      mapId,
+    ).invokeMethod("removeCircle", <String, dynamic>{"id": id});
+  }
+
+  /// 更新圆
+  Future<void> updateCircle(
+    String id,
+    CircleUpdateOptions options, {
+    required int mapId,
+  }) {
+    return _channel(mapId).invokeMethod("updateCircle", <String, dynamic>{
+      "id": id,
+      "options": options,
+    });
+  }
+
   /// 获取当前定位信息
   Future<Location> getUserLocation({required int mapId}) async {
     final result = await _channel(
@@ -441,6 +493,18 @@ class _TencentMapApiCodec extends StandardMessageCodec {
     } else if (value is PolylineUpdateOptions) {
       buffer.putUint8(146);
       writeValue(buffer, value.encode());
+    } else if (value is Polygon) {
+      buffer.putUint8(147);
+      writeValue(buffer, value.encode());
+    } else if (value is PolygonUpdateOptions) {
+      buffer.putUint8(148);
+      writeValue(buffer, value.encode());
+    } else if (value is Circle) {
+      buffer.putUint8(149);
+      writeValue(buffer, value.encode());
+    } else if (value is CircleUpdateOptions) {
+      buffer.putUint8(150);
+      writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
     }
@@ -487,6 +551,14 @@ class _TencentMapApiCodec extends StandardMessageCodec {
         return Polyline.decode(readValue(buffer)!);
       case 146:
         return PolylineUpdateOptions.decode(readValue(buffer)!);
+      case 147:
+        return Polygon.decode(readValue(buffer)!);
+      case 148:
+        return PolygonUpdateOptions.decode(readValue(buffer)!);
+      case 149:
+        return Circle.decode(readValue(buffer)!);
+      case 150:
+        return CircleUpdateOptions.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }

@@ -467,14 +467,11 @@ class Polyline {
 
   static Polyline decode(Object result) {
     result as List<Object?>;
-    final pos = result[1]! as List<List<Object?>>;
-    List<LatLng> pos_result = [];
-    for (List<Object?> obj in pos) {
-      pos_result.add(Position.decode(obj).latLng);
-    }
     return Polyline(
       id: result[0]! as String,
-      position: pos_result,
+      position: (result[1]! as List<List<Object?>>)
+          .map((List<Object?> point) => Position.decode(point).latLng)
+          .toList(),
       alpha: result[2] as double?,
       width: result[3] as double?,
       cap: result[4] as bool?,
@@ -511,18 +508,263 @@ class PolylineUpdateOptions {
 
   static PolylineUpdateOptions decode(Object result) {
     result as List<Object?>;
-    final pos = result[0] != 0 ? result[0] as List<List<Object?>> : null;
-    List<LatLng>? pos_result = result[0] != 0 ? [] : null;
-    if (pos != null) {
-      for (List<Object?> obj in pos) {
-        pos_result!.add(Position.decode(obj).latLng);
-      }
-    }
     return PolylineUpdateOptions(
-      position: pos_result,
+      position: (result[0]! as List<List<Object?>>)
+          .map((List<Object?> point) => Position.decode(point).latLng)
+          .toList(),
       width: result[1] as double?,
       color: result[2] as int?,
       zIndex: result[3] as int?,
+    );
+  }
+}
+
+/// 多边形
+class Polygon {
+  Polygon({
+    required this.id,
+    required this.position,
+    this.width,
+    this.color,
+    this.borderColor,
+    this.holes,
+    this.zIndex,
+  });
+
+  /// 多边形ID
+  String id;
+
+  /// 多边形端点位置
+  List<LatLng> position;
+
+  /// 多边形边线宽度
+  double? width;
+
+  /// 多边形填充颜色
+  int? color;
+
+  /// 多边形边线颜色
+  int? borderColor;
+
+  /// 多边形镂空
+  List<List<LatLng>>? holes;
+
+  /// 多边形的Z轴显示顺序
+  int? zIndex;
+
+  Object encode() {
+    return <Object?>[
+      id,
+      position.map((LatLng point) => point.position.encode()).toList(),
+      width,
+      color,
+      borderColor,
+      holes
+          ?.map(
+            (List<LatLng> hole) =>
+                hole.map((LatLng point) => point.position.encode()).toList(),
+          )
+          .toList(),
+      zIndex,
+    ];
+  }
+
+  static Polygon decode(Object result) {
+    result as List<Object?>;
+    return Polygon(
+      id: result[0]! as String,
+      position: (result[1]! as List<List<Object?>>)
+          .map((List<Object?> point) => Position.decode(point).latLng)
+          .toList(),
+      width: result[2] as double?,
+      color: result[3] as int?,
+      borderColor: result[4] as int?,
+      holes: (result[5]! as List<List<List<Object?>>>)
+          .map(
+            (List<List<Object?>> p) => p
+                .map((List<Object?> p1) => Position.decode(p1).latLng)
+                .toList(),
+          )
+          .toList(),
+      zIndex: result[6] as int?,
+    );
+  }
+}
+
+/// 多边形更新选项
+class PolygonUpdateOptions {
+  PolygonUpdateOptions({
+    this.position,
+    this.width,
+    this.color,
+    this.borderColor,
+    this.holes,
+    this.zIndex,
+  });
+
+  /// 多边形端点位置
+  List<LatLng>? position;
+
+  /// 多边形边线宽度
+  double? width;
+
+  /// 多边形填充颜色
+  int? color;
+
+  /// 多边形边线颜色
+  int? borderColor;
+
+  /// 多边形镂空
+  List<List<LatLng>>? holes;
+
+  /// 多边形的Z轴显示顺序
+  int? zIndex;
+
+  Object encode() {
+    return <Object?>[
+      position?.map((LatLng point) => point.position.encode()).toList(),
+      width,
+      color,
+      borderColor,
+      holes
+          ?.map(
+            (List<LatLng> hole) =>
+                hole.map((LatLng point) => point.position.encode()).toList(),
+          )
+          .toList(),
+      zIndex,
+    ];
+  }
+
+  static PolygonUpdateOptions decode(Object result) {
+    result as List<Object?>;
+    return PolygonUpdateOptions(
+      position: (result[0]! as List<List<Object?>>)
+          .map((List<Object?> point) => Position.decode(point).latLng)
+          .toList(),
+      width: result[1] as double?,
+      color: result[2] as int?,
+      borderColor: result[3] as int?,
+      holes: (result[4]! as List<List<List<Object?>>>)
+          .map(
+            (List<List<Object?>> p) => p
+                .map((List<Object?> p1) => Position.decode(p1).latLng)
+                .toList(),
+          )
+          .toList(),
+      zIndex: result[5] as int?,
+    );
+  }
+}
+
+/// 圆
+class Circle {
+  Circle({
+    required this.id,
+    required this.position,
+    this.radius,
+    this.width,
+    this.color,
+    this.borderColor,
+    this.zIndex,
+  });
+
+  /// 圆ID
+  String id;
+
+  /// 圆心位置
+  LatLng position;
+
+  /// 圆半径
+  double? radius;
+
+  /// 圆边线宽度
+  double? width;
+
+  /// 圆填充颜色
+  int? color;
+
+  /// 圆边线颜色
+  int? borderColor;
+
+  /// 圆的Z轴显示顺序
+  int? zIndex;
+
+  Object encode() {
+    return <Object?>[
+      id,
+      position.position.encode(),
+      radius,
+      width,
+      color,
+      borderColor,
+      zIndex,
+    ];
+  }
+
+  static Circle decode(Object result) {
+    result as List<Object?>;
+    return Circle(
+      id: result[0]! as String,
+      position: Position.decode(result[1]! as List<Object?>).latLng,
+      radius: result[2] as double,
+      width: result[3] as double?,
+      color: result[4] as int?,
+      borderColor: result[5] as int?,
+      zIndex: result[6] as int?,
+    );
+  }
+}
+
+/// 圆更新选项
+class CircleUpdateOptions {
+  CircleUpdateOptions({
+    this.position,
+    this.radius,
+    this.width,
+    this.color,
+    this.borderColor,
+    this.zIndex,
+  });
+
+  /// 圆心位置
+  LatLng position;
+
+  /// 圆半径
+  double? radius;
+
+  /// 圆边线宽度
+  double? width;
+
+  /// 圆填充颜色
+  int? color;
+
+  /// 圆边线颜色
+  int? borderColor;
+
+  /// 圆的Z轴显示顺序
+  int? zIndex;
+
+  Object encode() {
+    return <Object?>[
+      position.position.encode(),
+      radius,
+      width,
+      color,
+      borderColor,
+      zIndex,
+    ];
+  }
+
+  static CircleUpdateOptions decode(Object result) {
+    result as List<Object?>;
+    return CircleUpdateOptions(
+      position: Position.decode(result[0]! as List<Object?>).latLng,
+      radius: result[1] as double,
+      width: result[2] as double?,
+      color: result[3] as int?,
+      borderColor: result[4] as int?,
+      zIndex: result[5] as int?,
     );
   }
 }

@@ -4,7 +4,9 @@ import android.content.Context
 import com.tencent.tencentmap.mapsdk.maps.BaseMapView
 import com.tencent.tencentmap.mapsdk.maps.MapView
 import com.tencent.tencentmap.mapsdk.maps.TextureMapView
+import com.tencent.tencentmap.mapsdk.maps.model.Circle
 import com.tencent.tencentmap.mapsdk.maps.model.Marker
+import com.tencent.tencentmap.mapsdk.maps.model.Polygon
 import com.tencent.tencentmap.mapsdk.maps.model.Polyline
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.platform.PlatformView
@@ -20,8 +22,12 @@ class TencentMap(
   val controller: TencentMapController
   val markers = mutableMapOf<String, Marker>()
   val polylines = mutableMapOf<String, Polyline>()
+  val polygons = mutableMapOf<String, Polygon>()
+  val circles = mutableMapOf<String, Circle>()
   val tencentMapMarkerIdToDartMarkerId = mutableMapOf<String, String>()
   val tencentMapPolylineIdToDartPolylineId = mutableMapOf<String, String>()
+  val tencentMapPolygonIdToDartPolygonId = mutableMapOf<String, String>()
+  val tencentMapCircleIdToDartCircleId = mutableMapOf<String, String>()
 
   override fun getView(): BaseMapView {
     return mapView

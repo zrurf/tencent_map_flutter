@@ -435,21 +435,21 @@ data class MarkerUpdateOptions(
   }
 }
 
-/** 线段配置属性 */
+/** 折线配置属性 */
 data class Polyline(
-    /** 标记点ID */
+    /** 折线ID */
     val id: String,
-    /** 点坐标 */
+    /** 折线点坐标 */
     val position: List<Position>?,
-    /** 线的透明度 */
+    /** 折线透明度 */
     val alpha: Double? = null,
-    /** 线宽度 */
+    /** 折线宽度 */
     val width: Double? = null,
     /** 连接点为圆角 */
     val cap: Boolean? = null,
     /** Z轴显示顺序 */
     val zIndex: Int? = null,
-    /** 线段颜色 */
+    /** 折线颜色 */
     val color: Int? = null,
 ) {
     companion object {
@@ -480,7 +480,7 @@ data class Polyline(
     }
 }
 
-/** 线段更新选项 */
+/** 折线更新选项 */
 data class PolylineUpdateOptions (
     /** 点坐标 */
     val position: List<Position>?,
@@ -507,6 +507,180 @@ data class PolylineUpdateOptions (
             width,
             zIndex,
             color
+        )
+    }
+}
+
+/** 多边形 */
+data class Polygon (
+    /** 多边形ID */
+    val id: String,
+    /** 多边形端点坐标 */
+    val position: List<Position>?,
+    /** 边线宽度 */
+    val width: Double? = null,
+    /** 填充颜色 */
+    val color: Int? = null,
+    /** 边线颜色 */
+    val borderColor: Int? = null,
+    /** 镂空 */
+    val holes: List<List<Position>>? = null,
+    /** Z轴显示顺序 */
+    val zIndex: Int? = null,
+) {
+    companion object {
+        fun fromList(list: List<Any?>): Polygon {
+            val id = list[0] as String
+            val position = (list[1] as List<List<Any?>>).map { p -> Position.fromList(p) }.toList()
+            val width = list[2] as Double?
+            val color = list[3] as Int?
+            val borderColor = list[4] as Int?
+            val holes = (list[5] as List<List<List<Any?>>>).map {
+                p -> p.map { p1 -> Position.fromList(p1)
+                }.toList() }.toList()
+            val zIndex = list[6] as Int?
+
+            return Polygon(id, position, width, color, borderColor, holes, zIndex)
+        }
+    }
+
+    fun toList(): List<Any?> {
+        return listOf(
+            id,
+            position?.map { p -> p.toList() }?.toList(),
+            width,
+            color,
+            borderColor,
+            holes?.map { p -> p.map { p1 -> p1.toList() }.toList() }?.toList(),
+            zIndex
+        )
+    }
+}
+
+/** 多边形更新选项 */
+data class PolygonUpdateOptions (
+    /** 多边形端点坐标 */
+    val position: List<Position>?,
+    /** 边线宽度 */
+    val width: Double? = null,
+    /** 填充颜色 */
+    val color: Int? = null,
+    /** 边线颜色 */
+    val borderColor: Int? = null,
+    /** 镂空 */
+    val holes: List<List<Position>>? = null,
+    /** Z轴显示顺序 */
+    val zIndex: Int? = null,
+) {
+    companion object {
+        fun fromList(list: List<Any?>): PolygonUpdateOptions {
+            val position = (list[0] as List<List<Any?>>).map { p -> Position.fromList(p) }.toList()
+            val width = list[1] as Double?
+            val color = list[2] as Int?
+            val borderColor = list[3] as Int?
+            val holes = (list[4] as List<List<List<Any?>>>).map { p ->
+                p.map { p1 ->
+                    Position.fromList(p1)
+                }.toList()
+            }.toList()
+            val zIndex = list[5] as Int?
+
+            return PolygonUpdateOptions(position, width, color, borderColor, holes, zIndex)
+        }
+    }
+
+    fun toList(): List<Any?> {
+        return listOf(
+            position?.map { p -> p.toList() }?.toList(),
+            width,
+            color,
+            borderColor,
+            holes?.map { p -> p.map { p1 -> p1.toList() }.toList() }?.toList(),
+            zIndex
+        )
+    }
+}
+
+/** 圆 */
+data class Circle (
+    /** 圆ID */
+    val id: String,
+    /** 圆心坐标 */
+    val position: Position?,
+    /** 半径 */
+    val radius: Double? = null,
+    /** 边线宽度 */
+    val width: Double? = null,
+    /** 填充颜色 */
+    val color: Int? = null,
+    /** 边线颜色 */
+    val borderColor: Int? = null,
+    /** Z轴显示顺序 */
+    val zIndex: Int? = null,
+) {
+    companion object {
+        fun fromList(list: List<Any?>): Circle {
+            val id = list[0] as String
+            val position = Position.fromList(list[1] as List<Any?>)
+            val radius = list[2] as Double?
+            val width = list[3] as Double?
+            val color = list[4] as Int?
+            val borderColor = list[5] as Int?
+            val zIndex = list[6] as Int?
+
+            return Circle(id, position, radius ,width, color, borderColor, zIndex)
+        }
+    }
+
+    fun toList(): List<Any?> {
+        return listOf(
+            id,
+            position?.toList(),
+            radius,
+            width,
+            color,
+            borderColor,
+            zIndex
+        )
+    }
+}
+
+/** 圆更新选项 */
+data class CircleUpdateOptions (
+    /** 圆心坐标 */
+    val position: Position?,
+    /** 半径 */
+    val radius: Double? = null,
+    /** 边线宽度 */
+    val width: Double? = null,
+    /** 填充颜色 */
+    val color: Int? = null,
+    /** 边线颜色 */
+    val borderColor: Int? = null,
+    /** Z轴显示顺序 */
+    val zIndex: Int? = null,
+) {
+    companion object {
+        fun fromList(list: List<Any?>): CircleUpdateOptions {
+            val position = Position.fromList(list[0] as List<Any?>)
+            val radius = list[1] as Double?
+            val width = list[2] as Double?
+            val color = list[3] as Int?
+            val borderColor = list[4] as Int?
+            val zIndex = list[5] as Int?
+
+            return CircleUpdateOptions(position, radius ,width, color, borderColor, zIndex)
+        }
+    }
+
+    fun toList(): List<Any?> {
+        return listOf(
+            position?.toList(),
+            radius,
+            width,
+            color,
+            borderColor,
+            zIndex
         )
     }
 }

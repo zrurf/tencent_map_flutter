@@ -199,6 +199,74 @@ class TencentMapApi(private val tencentMap: TencentMap) {
         }
     }
 
+    fun addPolygon(polygon: Polygon) {
+        val tencentPolygon = mapView.map.addPolygon(polygon.toPolygonOptions(tencentMap.binding))
+        tencentMap.polygons[polygon.id] = tencentPolygon
+        tencentMap.tencentMapPolygonIdToDartPolygonId[tencentPolygon.id] = polygon.id
+    }
+
+    fun removePolygon(id: String) {
+        val polygon = tencentMap.polygons[id]
+        if (polygon != null) {
+            polygon.remove()
+            tencentMap.polygons.remove(id)
+            tencentMap.tencentMapPolygonIdToDartPolygonId.remove(polygon.id)
+        }
+    }
+
+    fun updatePolygon(id: String, options: PolygonUpdateOptions) {
+        options.position?.let { tencentMap.polygons[id]?.points = it.map { position -> LatLng(position.latitude, position.longitude) } }
+        if (options.color != null) {
+            tencentMap.polygons[id]?.fillColor = options.color
+        }
+        if (options.borderColor != null) {
+            tencentMap.polygons[id]?.strokeColor = options.borderColor
+        }
+        if (options.width != null) {
+            tencentMap.polygons[id]?.strokeWidth = options.width.toFloat()
+        }
+        if (options.zIndex != null) {
+            tencentMap.polygons[id]?.zIndex = options.zIndex
+        }
+        if (options.holes != null) {
+            tencentMap.polygons[id]?.setHolePoints(options.holes.map { p -> p.map { p1 -> LatLng(p1.latitude, p1.longitude) } })
+        }
+    }
+
+    fun addCircle(circle: Circle) {
+        val tencentCircle = mapView.map.addCircle(circle.toCircleOptions(tencentMap.binding))
+        tencentMap.circles[circle.id] = tencentCircle
+        tencentMap.tencentMapCircleIdToDartCircleId[tencentCircle.id] = circle.id
+    }
+
+    fun removeCircle(id: String) {
+        val circle = tencentMap.circles[id]
+        if (circle != null) {
+            circle.remove()
+            tencentMap.circles.remove(id)
+            tencentMap.tencentMapCircleIdToDartCircleId.remove(circle.id)
+        }
+    }
+
+    fun updateCircle(id: String, options: CircleUpdateOptions) {
+        options.position?.let { tencentMap.circles[id]?.center = LatLng(it.latitude, it.longitude) }
+        if (options.radius != null) {
+            tencentMap.circles[id]?.radius = options.radius
+        }
+        if (options.color != null) {
+            tencentMap.circles[id]?.fillColor = options.color
+        }
+        if (options.borderColor != null) {
+            tencentMap.circles[id]?.strokeColor = options.borderColor
+        }
+        if (options.width != null) {
+            tencentMap.circles[id]?.strokeWidth = options.width.toFloat()
+        }
+        if (options.zIndex != null) {
+            tencentMap.circles[id]?.zIndex = options.zIndex
+        }
+    }
+
   fun getUserLocation(): Location {
     return mapView.map.myLocation.toLocation()
   }

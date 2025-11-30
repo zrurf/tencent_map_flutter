@@ -121,6 +121,44 @@ class TencentMapController(viewId: Int, binding: FlutterPluginBinding, private v
          result.success(null)
       }
 
+      "addPolygon" -> {
+          val polygon = call.argument<Polygon>("polygon")!!
+          api.addPolygon(polygon)
+          result.success(null)
+      }
+
+      "removePolygon" -> {
+          val id = call.argument<String>("id")!!
+          api.removePolygon(id)
+          result.success(null)
+      }
+
+      "updatePolygon" -> {
+          val id = call.argument<String>("id")!!
+          val options = call.argument<PolygonUpdateOptions>("options")!!
+          api.updatePolygon(id, options)
+          result.success(null)
+      }
+
+        "addCircle" -> {
+            val circle = call.argument<Circle>("circle")!!
+            api.addCircle(circle)
+            result.success(null)
+        }
+
+        "removeCircle" -> {
+            val id = call.argument<String>("id")!!
+            api.removeCircle(id)
+            result.success(null)
+        }
+
+        "updateCircle" -> {
+            val id = call.argument<String>("id")!!
+            val options = call.argument<CircleUpdateOptions>("options")!!
+            api.updateCircle(id, options)
+            result.success(null)
+        }
+
       "start" -> {
         api.start()
         result.success(null)
@@ -399,6 +437,30 @@ private object TencentMapApiCodec : StandardMessageCodec() {
          }
       }
 
+      147.toByte() -> {
+          return (readValue(buffer) as? List<Any?>)?.let {
+              Polygon.fromList(it)
+          }
+      }
+
+      148.toByte() -> {
+          return (readValue(buffer) as? List<Any?>)?.let {
+              PolygonUpdateOptions.fromList(it)
+          }
+      }
+
+      149.toByte() -> {
+          return (readValue(buffer) as? List<Any?>)?.let {
+              Circle.fromList(it)
+          }
+      }
+
+      150.toByte() -> {
+          return (readValue(buffer) as? List<Any?>)?.let {
+              CircleUpdateOptions.fromList(it)
+          }
+      }
+
       else -> super.readValueOfType(type, buffer)
     }
   }
@@ -497,6 +559,26 @@ private object TencentMapApiCodec : StandardMessageCodec() {
 
       is PolylineUpdateOptions -> {
           stream.write(146)
+          writeValue(stream, value.toList())
+      }
+
+      is Polygon -> {
+          stream.write(147)
+          writeValue(stream, value.toList())
+      }
+
+      is PolygonUpdateOptions -> {
+          stream.write(148)
+          writeValue(stream, value.toList())
+      }
+
+      is Circle -> {
+          stream.write(149)
+          writeValue(stream, value.toList())
+      }
+
+      is CircleUpdateOptions -> {
+          stream.write(149)
           writeValue(stream, value.toList())
       }
 
